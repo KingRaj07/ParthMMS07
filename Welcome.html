@@ -29,7 +29,7 @@
       font-size: 20px;
     }
 
-    .btn-logout {
+    .btn {
       margin-top: 30px;
       padding: 12px 24px;
       background-color: white;
@@ -39,9 +39,10 @@
       font-size: 16px;
       cursor: pointer;
       transition: 0.3s ease;
+      margin-right: 10px;
     }
 
-    .btn-logout:hover {
+    .btn:hover {
       background-color: #eee;
     }
   </style>
@@ -51,12 +52,17 @@
   <div class="welcome-container">
     <h1>Welcome, Admin!</h1>
     <p>You have successfully logged in.</p>
-    <button class="btn-logout" onclick="logout()">Logout</button>
+    <button class="btn" onclick="goToDashboard()">Go to Dashboard</button>
+    <button class="btn" onclick="logout()">Logout</button>
   </div>
 
   <script>
+    function goToDashboard() {
+      window.location.href = "dashboard.html";
+    }
+
     function logout() {
-      window.location.href = "Welcome.html";
+      window.location.href = "index.html";
     }
   </script>
 
