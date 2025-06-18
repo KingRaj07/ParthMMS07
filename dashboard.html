@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - YouTube Style</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #181818;
+      color: #fff;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background-color: #202020;
+      padding: 20px;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #aaa;
+      text-decoration: none;
+      margin: 10px 0;
+      padding: 8px;
+      border-radius: 5px;
+    }
+
+    .sidebar a:hover {
+      background-color: #333;
+      color: white;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      background-color: #202020;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header input[type="text"] {
+      padding: 8px 12px;
+      width: 250px;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+    }
+
+    .btn-upload {
+      background-color: #ff0000;
+      padding: 8px 16px;
+      color: white;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-upload:hover {
+      background-color: #cc0000;
+    }
+
+    #file-name {
+      font-size: 14px;
+      color: #ccc;
+      margin-left: 10px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px 30px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .video-card {
+      background-color: #282828;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: 0.3s ease;
+    }
+
+    .video-card:hover {
+      transform: scale(1.02);
+    }
+
+    .video-thumb {
+      width: 100%;
+      height: 140px;
+      background-color: #444;
+    }
+
+    .video-info {
+      padding: 10px;
+    }
+
+    .video-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .video-channel {
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>MyTube</h2>
+    <a href="#">Home</a>
+    <a href="#">Trending</a>
+    <a href="#">Subscriptions</a>
+    <a href="#">Library</a>
+    <a href="Welcome.html">Back to Welcome</a>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <div class="header-left">
+        <h2>My MMS Dashboard</h2>
+        <input type="text" placeholder="Search videos...">
+        <label for="upload" class="btn-upload">Upload</label>
+        <input type="file" id="upload" style="display:none">
+        <span id="file-name"></span>
+      </div>
+    </div>
+
+    <div class="video-grid">
+      <!-- Video card template -->
+      <div class="video-card">
+        <div class="video-thumb"></div>
+        <div class="video-info">
+          <div class="video-title">Sample Video Title</div>
+          <div class="video-channel">Channel Name</div>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb"></div>
+        <div class="video-info">
+          <div class="video-title">Another Video</div>
+          <div class="video-channel">Cool Channel</div>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb"></div>
+        <div class="video-info">
+          <div class="video-title">React Tutorial</div>
+          <div class="video-channel">Code Academy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const uploadInput = document.getElementById('upload');
+    const fileNameSpan = document.getElementById('file-name');
+
+    uploadInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        fileNameSpan.textContent = "Uploaded: " + file.name;
+      } else {
+        fileNameSpan.textContent = "";
+      }
+    });
+  </script>
+
+</body>
+</html>
