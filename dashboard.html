@@ -74,6 +74,8 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .user-icon {
@@ -123,6 +125,9 @@
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
 
     .video-thumbnail {
@@ -156,8 +161,7 @@
       <button onclick="searchVideo()">🔍</button>
     </div>
     <div class="actions">
-      <button class="upload-button" onclick="triggerUpload()">Upload</button>
-      <input type="file" id="uploadInput" style="display: none;" onchange="uploadFile()">
+      <a href="upload.html" class="upload-button">Upload</a>
       <div class="user-icon" onclick="alert('Redirect to login or profile')"></div>
     </div>
   </header>
@@ -171,29 +175,29 @@
     </aside>
 
     <main class="content">
-      <div class="video-card">
+      <a href="video.html" class="video-card">
         <div class="video-thumbnail"></div>
         <div class="video-info">
           <div class="video-title">Sample Video Title</div>
           <div class="video-channel">Channel Name</div>
         </div>
-      </div>
+      </a>
 
-      <div class="video-card">
+      <a href="video.html" class="video-card">
         <div class="video-thumbnail"></div>
         <div class="video-info">
           <div class="video-title">Another Video</div>
           <div class="video-channel">Another Channel</div>
         </div>
-      </div>
+      </a>
 
-      <div class="video-card">
+      <a href="video.html" class="video-card">
         <div class="video-thumbnail"></div>
         <div class="video-info">
           <div class="video-title">Video Title Example</div>
           <div class="video-channel">Example Channel</div>
         </div>
-      </div>
+      </a>
     </main>
   </div>
 
@@ -204,18 +208,6 @@
         alert("Searching for: " + input);
       } else {
         alert("Please enter a search term.");
-      }
-    }
-
-    function triggerUpload() {
-      document.getElementById("uploadInput").click();
-    }
-
-    function uploadFile() {
-      const fileInput = document.getElementById("uploadInput");
-      const file = fileInput.files[0];
-      if (file) {
-        alert("File selected: " + file.name);
       }
     }
   </script>
