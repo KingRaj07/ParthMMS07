@@ -1,3 +1,4 @@
+<!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,14 +30,14 @@
       z-index: 1000;
     }
 
-    header .logo {
+    .logo {
       font-size: 24px;
       color: red;
       font-weight: bold;
       cursor: pointer;
     }
 
-    header .search-bar {
+    .search-bar {
       flex: 1;
       max-width: 600px;
       margin: 0 20px;
@@ -59,7 +60,7 @@
       cursor: pointer;
     }
 
-    header .actions {
+    .actions {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -74,7 +75,7 @@
       cursor: pointer;
     }
 
-    header .user-icon {
+    .user-icon {
       width: 32px;
       height: 32px;
       border-radius: 50%;
@@ -98,7 +99,9 @@
       margin: 15px 0;
       font-size: 16px;
       cursor: pointer;
-      transition: 0.3s;
+      text-decoration: none;
+      color: black;
+      display: block;
     }
 
     .sidebar-item:hover {
@@ -145,7 +148,7 @@
 <body>
 
   <header>
-    <div class="logo" onclick="alert('Redirect to homepage')">Parth MMS</div>
+    <div class="logo" onclick="window.location.href='home.html'">YouTube</div>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search">
       <button onclick="searchVideo()">🔍</button>
@@ -159,7 +162,7 @@
 
   <div class="container">
     <aside class="sidebar">
-      <div class="sidebar-item" onclick="alert('Home Clicked')">🏠 Home</div>
+      <a href="home.html" class="sidebar-item">🏠 Home</a>
       <div class="sidebar-item" onclick="alert('Trending Clicked')">🔥 Trending</div>
       <div class="sidebar-item" onclick="alert('Subscriptions Clicked')">📺 Subscriptions</div>
       <div class="sidebar-item" onclick="alert('Library Clicked')">📚 Library</div>
