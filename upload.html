@@ -1,0 +1,108 @@
+<!-- upload.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Video - MyTube</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+    body { background-color: #f9f9f9; color: #0f0f0f; }
+
+    header {
+      background-color: white;
+      padding: 10px 20px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      color: red;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input[type="file"], input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: red;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    video {
+      width: 100%;
+      margin-top: 20px;
+      display: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="dashboard.html">MyTube</a>
+  </header>
+
+  <div class="container">
+    <h2>Upload Your Video</h2>
+    <input type="text" placeholder="Enter Video Title" id="videoTitle" />
+    <input type="file" accept="video/*" id="videoFile" onchange="previewVideo()" />
+    <button onclick="submitUpload()">Upload</button>
+
+    <video id="videoPreview" controls></video>
+  </div>
+
+  <script>
+    function previewVideo() {
+      const file = document.getElementById('videoFile').files[0];
+      const preview = document.getElementById('videoPreview');
+      const titleInput = document.getElementById('videoTitle');
+
+      if (file) {
+        preview.style.display = 'block';
+        preview.src = URL.createObjectURL(file);
+        titleInput.value = file.name.replace(/\.[^/.]+$/, "");
+      }
+    }
+
+    function submitUpload() {
+      const file = document.getElementById('videoFile').files[0];
+      const title = document.getElementById('videoTitle').value;
+
+      if (!file || !title.trim()) {
+        alert("Please select a video and enter a title.");
+        return;
+      }
+
+      alert("Uploading: " + title + "\nFilename: " + file.name);
+      window.location.href = "dashboard.html";
+    }
+  </script>
+
+</body>
+</html>
