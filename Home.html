@@ -1,222 +1,49 @@
+<!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>YouTube Replica</title>
+  <title>YouTube - Home</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
-    }
-
     body {
-      background-color: #f9f9f9;
-      color: #0f0f0f;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #fff;
+      text-align: center;
+      padding: 50px;
     }
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      background-color: white;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    header .logo {
-      font-size: 24px;
+    h1 {
       color: red;
-      font-weight: bold;
-      cursor: pointer;
+      margin-bottom: 20px;
     }
 
-    header .search-bar {
-      flex: 1;
-      max-width: 600px;
-      margin: 0 20px;
-      display: flex;
+    p {
+      font-size: 18px;
+      color: #333;
     }
 
-    .search-bar input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-right: none;
-      border-radius: 2px 0 0 2px;
-    }
-
-    .search-bar button {
-      padding: 8px 12px;
-      background-color: #f8f8f8;
-      border: 1px solid #ccc;
-      border-radius: 0 2px 2px 0;
-      cursor: pointer;
-    }
-
-    header .actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .upload-button {
-      padding: 6px 12px;
+    a.button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
       background-color: #ff0000;
       color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    header .user-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background-color: #ccc;
-      cursor: pointer;
-    }
-
-    .container {
-      display: flex;
-    }
-
-    .sidebar {
-      width: 200px;
-      background-color: white;
-      padding: 20px 10px;
-      height: 100vh;
-      border-right: 1px solid #e0e0e0;
-    }
-
-    .sidebar-item {
-      margin: 15px 0;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
       text-decoration: none;
-      color: black;
-      display: block;
+      border-radius: 5px;
     }
 
-    .sidebar-item:hover {
-      color: red;
-    }
-
-    .content {
-      flex: 1;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .video-card {
-      background-color: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-    }
-
-    .video-thumbnail {
-      width: 100%;
-      height: 150px;
-      background-color: #ddd;
-    }
-
-    .video-info {
-      padding: 10px;
-    }
-
-    .video-title {
-      font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-
-    .video-channel {
-      font-size: 13px;
-      color: #606060;
+    a.button:hover {
+      background-color: #cc0000;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo" onclick="window.location.href='home.html'">YouTube</div>
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search">
-      <button onclick="searchVideo()">🔍</button>
-    </div>
-    <div class="actions">
-      <button class="upload-button" onclick="triggerUpload()">Upload</button>
-      <input type="file" id="uploadInput" style="display: none;" onchange="uploadFile()">
-      <div class="user-icon" onclick="alert('Redirect to login or profile')"></div>
-    </div>
-  </header>
-
-  <div class="container">
-    <aside class="sidebar">
-      <a href="home.html" class="sidebar-item">🏠 Home</a>
-      <div class="sidebar-item" onclick="alert('Trending Clicked')">🔥 Trending</div>
-      <div class="sidebar-item" onclick="alert('Subscriptions Clicked')">📺 Subscriptions</div>
-      <div class="sidebar-item" onclick="alert('Library Clicked')">📚 Library</div>
-    </aside>
-
-    <main class="content">
-      <div class="video-card">
-        <div class="video-thumbnail"></div>
-        <div class="video-info">
-          <div class="video-title">Sample Video Title</div>
-          <div class="video-channel">Channel Name</div>
-        </div>
-      </div>
-
-      <div class="video-card">
-        <div class="video-thumbnail"></div>
-        <div class="video-info">
-          <div class="video-title">Another Video</div>
-          <div class="video-channel">Another Channel</div>
-        </div>
-      </div>
-
-      <div class="video-card">
-        <div class="video-thumbnail"></div>
-        <div class="video-info">
-          <div class="video-title">Video Title Example</div>
-          <div class="video-channel">Example Channel</div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <script>
-    function searchVideo() {
-      const input = document.getElementById("searchInput").value;
-      if (input.trim() !== "") {
-        alert("Searching for: " + input);
-      } else {
-        alert("Please enter a search term.");
-      }
-    }
-
-    function triggerUpload() {
-      document.getElementById("uploadInput").click();
-    }
-
-    function uploadFile() {
-      const fileInput = document.getElementById("uploadInput");
-      const file = fileInput.files[0];
-      if (file) {
-        alert("File selected: " + file.name);
-      }
-    }
-  </script>
+  <h1>Welcome to Your YouTube Home Page</h1>
+  <p>This is your custom homepage. Click below to go back to the dashboard.</p>
+  <a class="button" href="dashboard.html">🔙 Back to Dashboard</a>
 
 </body>
 </html>
