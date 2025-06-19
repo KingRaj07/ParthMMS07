@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>YouTube Replica</title>
+  <title>YouTube Replica - Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     * {
@@ -35,6 +35,7 @@
       color: red;
       font-weight: bold;
       cursor: pointer;
+      text-decoration: none;
     }
 
     .search-bar {
@@ -102,6 +103,7 @@
       text-decoration: none;
       color: black;
       display: block;
+      transition: 0.2s;
     }
 
     .sidebar-item:hover {
@@ -148,7 +150,7 @@
 <body>
 
   <header>
-    <div class="logo" onclick="window.location.href='home.html'">YouTube</div>
+    <a class="logo" href="home.html">YouTube</a>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search">
       <button onclick="searchVideo()">🔍</button>
