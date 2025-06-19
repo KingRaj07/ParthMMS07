@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Upload Video - MyTube</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
     body { background-color: #f9f9f9; color: #0f0f0f; }
@@ -99,7 +99,15 @@
         return;
       }
 
-      alert("Uploading: " + title + "\nFilename: " + file.name);
+      const videoList = JSON.parse(localStorage.getItem('uploadedVideos') || '[]');
+      videoList.push({
+        title: title,
+        url: URL.createObjectURL(file),
+        channel: "Uploaded Channel"
+      });
+      localStorage.setItem('uploadedVideos', JSON.stringify(videoList));
+
+      alert("Uploaded successfully!");
       window.location.href = "dashboard.html";
     }
   </script>
