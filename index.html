@@ -1,55 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Login | MyTube</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: #222;
       color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
     .login-box {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 40px;
-      border-radius: 10px;
+      background: #333;
+      padding: 30px;
+      border-radius: 8px;
       text-align: center;
+      width: 300px;
     }
     input, button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      border: none;
       border-radius: 5px;
+      border: none;
     }
     button {
-      background: white;
-      color: #333;
+      background: #00f2fe;
+      color: black;
       font-weight: bold;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="login-box">
-    <h2>Login to MyTube</h2>
-    <input type="text" id="username" placeholder="Enter your name" />
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
     <button onclick="login()">Login</button>
+    <div id="error" style="color: red; margin-top: 10px;"></div>
   </div>
 
   <script>
     function login() {
-      const username = document.getElementById("username").value.trim();
-      if (!username) {
-        alert("Please enter your name.");
-        return;
-      }
-      localStorage.setItem("username", username);
-      window.location.href = "Welcome.html";
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const errorDiv = document.getElementById("error");
+
+      fetch('login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = "Welcome.html";
+        } else {
+          errorDiv.textContent = data.error;
+        }
+      })
+      .catch(() => {
+        errorDiv.textContent = "Login failed due to server error.";
+      });
     }
   </script>
 </body>
