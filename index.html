@@ -1,66 +1,212 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login Page</title>
+  <meta charset="UTF-8" />
+  <title>Login | MyTube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    :root {
+      --main: #2575fc;
+      --secondary: #6a11cb;
+      --error: #ff4d4d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     body {
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-      height: 100vh; display: flex; justify-content: center; align-items: center;
-      position: relative; overflow: hidden;
+      height: 100vh;
+      background: linear-gradient(135deg, var(--secondary), var(--main));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
     }
+
     .background-text {
-      position: absolute; top: 10%; left: 50%; transform: translate(-50%, -50%);
-      font-size: 100px; color: rgba(255, 255, 255, 0.12); font-weight: 900;
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 100px;
+      color: rgba(255, 255, 255, 0.07);
+      font-weight: 900;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 0;
     }
+
     .login-container {
-      background: #fff; padding: 40px 30px; border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2); width: 350px; z-index: 1;
+      z-index: 1;
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 420px;
+      position: relative;
     }
-    .login-container h2 { text-align: center; margin-bottom: 25px; }
-    .input-group { margin-bottom: 20px; }
-    .input-group label { display: block; margin-bottom: 8px; color: #555; }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: var(--main);
+      font-size: 30px;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+      font-weight: 600;
+    }
+
     .input-group input {
-      width: 100%; padding: 10px; border: 1px solid #aaa; border-radius: 5px;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: 0.3s;
     }
+
+    .input-group input:focus {
+      border-color: var(--main);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(37, 117, 252, 0.2);
+    }
+
+    .toggle-password {
+      font-size: 13px;
+      color: #666;
+      text-align: right;
+      margin-top: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0 20px;
+      font-size: 14px;
+      color: #444;
+    }
+
     .login-btn {
-      width: 100%; padding: 12px; border: none; background-color: #2575fc;
-      color: white; font-size: 16px; border-radius: 5px; cursor: pointer;
+      width: 100%;
+      padding: 12px;
+      background: var(--main);
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
     }
-    .login-btn:hover { background-color: #1a5ed9; }
+
+    .login-btn:hover {
+      background: #1a5ed9;
+    }
+
+    .error-message {
+      color: var(--error);
+      text-align: center;
+      margin-top: 12px;
+      font-size: 14px;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 480px) {
+      .background-text { font-size: 60px; top: 5%; }
+      .login-container { padding: 30px 20px; }
+    }
   </style>
 </head>
 <body>
+
   <div class="background-text">Parth (MMS)</div>
+
   <div class="login-container">
     <h2>Login</h2>
     <form id="loginForm">
       <div class="input-group">
         <label for="username">Username</label>
-        <input type="text" id="username" required placeholder="Enter Username">
+        <input type="text" id="username" placeholder="Enter Username" />
       </div>
+
       <div class="input-group">
         <label for="password">Password</label>
-        <input type="password" id="password" required placeholder="Enter Password">
+        <input type="password" id="password" placeholder="Enter Password" />
+        <div class="toggle-password" onclick="togglePassword()">👁 Show/Hide Password</div>
       </div>
+
+      <div class="remember-me">
+        <input type="checkbox" id="rememberMe" />
+        <label for="rememberMe">Remember Me</label>
+      </div>
+
       <button type="submit" class="login-btn">Login</button>
+      <div id="errorMessage" class="error-message"></div>
     </form>
   </div>
 
   <script>
+    const users = [
+      { username: "ParthMMS", password: "MMSXXX" },
+      { username: "Jyot2025", password: "P@ss1234" },
+      { username: "AdminYT", password: "admin321" },
+      { username: "VideoUser", password: "uploadit" },
+      { username: "ViewerOnly", password: "watch123" }
+    ];
+
+    function togglePassword() {
+      const pass = document.getElementById("password");
+      pass.type = pass.type === "password" ? "text" : "password";
+    }
+
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      if (username === 'ParthMMS' && password === 'MMSXXX') {
-        localStorage.setItem("loggedIn", "true");
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const error = document.getElementById('errorMessage');
+      const remember = document.getElementById('rememberMe').checked;
+
+      if (!username || !password) {
+        error.textContent = "⚠️ Please enter both username and password.";
+        return;
+      }
+
+      const matchedUser = users.find(user => user.username === username && user.password === password);
+
+      if (matchedUser) {
+        if (remember) {
+          localStorage.setItem("loggedIn", "true");
+          localStorage.setItem("username", matchedUser.username);
+        } else {
+          sessionStorage.setItem("loggedIn", "true");
+          sessionStorage.setItem("username", matchedUser.username);
+        }
         window.location.href = "Welcome.html";
       } else {
-        alert("Invalid Username or Password!");
+        error.textContent = "❌ Invalid Username or Password!";
       }
     });
   </script>
+
 </body>
 </html>
