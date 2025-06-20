@@ -3,160 +3,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>YouTube Replica - Dashboard</title>
+  <title>Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    body {
-      background-color: #f9f9f9;
-      color: #0f0f0f;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      background-color: white;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      font-size: 24px;
-      color: red;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .search-bar {
-      flex: 1;
-      max-width: 600px;
-      margin: 0 20px;
-      display: flex;
-    }
-
-    .search-bar input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-right: none;
-      border-radius: 2px 0 0 2px;
-    }
-
-    .search-bar button {
-      padding: 8px 12px;
-      background-color: #f8f8f8;
-      border: 1px solid #ccc;
-      border-radius: 0 2px 2px 0;
-      cursor: pointer;
-    }
-
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .upload-button {
-      padding: 6px 12px;
-      background-color: #ff0000;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .user-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background-color: #ccc;
-      cursor: pointer;
-    }
-
-    .container {
-      display: flex;
-    }
-
-    .sidebar {
-      width: 200px;
-      background-color: white;
-      padding: 20px 10px;
-      height: 100vh;
-      border-right: 1px solid #e0e0e0;
-    }
-
-    .sidebar-item {
-      margin: 15px 0;
-      font-size: 16px;
-      cursor: pointer;
-      text-decoration: none;
-      color: black;
-      display: block;
-      transition: 0.2s;
-    }
-
-    .sidebar-item:hover {
-      color: red;
-    }
-
-    .content {
-      flex: 1;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .video-card {
-      background-color: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .video-thumbnail {
-      width: 100%;
-      height: 150px;
-      background-color: #000;
-    }
-
-    .video-info {
-      padding: 10px;
-    }
-
-    .video-title {
-      font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-
-    .video-channel {
-      font-size: 13px;
-      color: #606060;
-    }
-
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+    body { background-color: #f9f9f9; color: #0f0f0f; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+    .logo { font-size: 24px; color: red; font-weight: bold; text-decoration: none; }
+    .search-bar { flex: 1; max-width: 600px; margin: 0 20px; display: flex; }
+    .search-bar input { width: 100%; padding: 8px; border: 1px solid #ccc; border-right: none; }
+    .search-bar button { padding: 8px 12px; background: #f8f8f8; border: 1px solid #ccc; cursor: pointer; }
+    .actions { display: flex; gap: 10px; align-items: center; }
+    .upload-button { padding: 6px 12px; background: red; color: white; border: none; border-radius: 4px; text-decoration: none; }
+    .container { display: flex; }
+    .sidebar { width: 200px; background: white; padding: 20px 10px; border-right: 1px solid #e0e0e0; }
+    .sidebar-item { margin: 15px 0; font-size: 16px; cursor: pointer; text-decoration: none; color: black; }
+    .sidebar-item:hover { color: red; }
+    .content { flex: 1; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .video-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 5px rgba(0,0,0,0.1); text-decoration: none; color: inherit; display: block; }
+    video { width: 100%; height: 150px; object-fit: cover; }
+    .video-info { padding: 10px; }
+    .video-title { font-weight: bold; font-size: 14px; }
+    .video-channel { font-size: 13px; color: #606060; }
   </style>
 </head>
 <body>
@@ -164,60 +32,50 @@
   <header>
     <a class="logo" href="home.html">YouTube</a>
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search">
-      <button onclick="searchVideo()">🔍</button>
+      <input type="text" id="searchInput" placeholder="Search" oninput="renderVideos()">
+      <button onclick="renderVideos()">🔍</button>
     </div>
     <div class="actions">
       <a href="upload.html" class="upload-button">Upload</a>
-      <div class="user-icon" onclick="alert('Redirect to login or profile')"></div>
     </div>
   </header>
 
   <div class="container">
     <aside class="sidebar">
       <a href="home.html" class="sidebar-item">🏠 Home</a>
-      <div class="sidebar-item" onclick="alert('Trending Clicked')">🔥 Trending</div>
-      <div class="sidebar-item" onclick="alert('Subscriptions Clicked')">📺 Subscriptions</div>
-      <div class="sidebar-item" onclick="alert('Library Clicked')">📚 Library</div>
+      <div class="sidebar-item">🔥 Trending</div>
+      <div class="sidebar-item">📺 Subscriptions</div>
+      <div class="sidebar-item">📚 Library</div>
     </aside>
-
-    <main class="content" id="videoContainer">
-      <!-- Dynamic videos will appear here -->
-    </main>
+    <main class="content" id="videoContainer"></main>
   </div>
 
   <script>
-    function searchVideo() {
-      const input = document.getElementById("searchInput").value;
-      if (input.trim() !== "") {
-        alert("Searching for: " + input);
-      } else {
-        alert("Please enter a search term.");
-      }
+    function renderVideos() {
+      const videos = JSON.parse(localStorage.getItem('uploadedVideos') || '[]');
+      const container = document.getElementById('videoContainer');
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      container.innerHTML = '';
+      videos
+        .filter(v => v.title.toLowerCase().includes(searchTerm))
+        .forEach(video => {
+          const card = document.createElement('a');
+          card.className = 'video-card';
+          card.href = video.url;
+          card.target = "_blank";
+          card.innerHTML = `
+            <video src="${video.url}" muted></video>
+            <div class="video-info">
+              <div class="video-title">${video.title}</div>
+              <div class="video-channel">${video.channel}</div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
     }
 
-    const videoContainer = document.getElementById('videoContainer');
-    const videos = JSON.parse(localStorage.getItem('uploadedVideos') || '[]');
-
-    videos.forEach(video => {
-      const card = document.createElement('a');
-      card.className = 'video-card';
-      card.href = video.url;
-      card.target = '_blank';
-
-      card.innerHTML = `
-        <div class="video-thumbnail">
-          <video src="${video.url}" muted></video>
-        </div>
-        <div class="video-info">
-          <div class="video-title">${video.title}</div>
-          <div class="video-channel">${video.channel}</div>
-        </div>
-      `;
-
-      videoContainer.appendChild(card);
-    });
+    // Initial render
+    renderVideos();
   </script>
-
 </body>
 </html>
