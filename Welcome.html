@@ -50,7 +50,6 @@
       window.location.href = "logout.php";
     }
 
-    // Load username from session via fetch
     fetch("session.php")
       .then(res => res.json())
       .then(data => {
