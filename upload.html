@@ -1,43 +1,63 @@
-<script>
-  function previewVideo() {
-    const file = document.getElementById('videoFile').files[0];
-    const preview = document.getElementById('videoPreview');
-    const titleInput = document.getElementById('videoTitle');
-    if (file) {
-      preview.src = URL.createObjectURL(file);
-      preview.style.display = 'block';
-      titleInput.value = file.name.replace(/\.[^/.]+$/, "");
-    }
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Video</title>
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f9f9f9; padding: 40px; }
+    input, button { margin-top: 10px; width: 100%; padding: 10px; }
+    video { width: 100%; margin-top: 20px; display: none; }
+  </style>
+</head>
+<body>
+  <h2>Upload Your Video</h2>
+  <input type="text" id="videoTitle" placeholder="Enter Video Title" />
+  <input type="file" id="videoFile" accept="video/*" onchange="previewVideo()" />
+  <button onclick="submitUpload()">Upload</button>
+  <video id="videoPreview" controls></video>
 
-  function submitUpload() {
-    const file = document.getElementById('videoFile').files[0];
-    const title = document.getElementById('videoTitle').value;
-    const username = localStorage.getItem("username") || sessionStorage.getItem("username");
-
-    if (!file || !title.trim()) {
-      alert("Please select a video and enter a title.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('video', file);
-    formData.append('title', title);
-    formData.append('username', username || 'Unknown');
-
-    fetch('upload.php', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("Uploaded successfully!");
-        window.location.href = "dashboard.html";
-      } else {
-        alert("Upload failed: " + data.error);
+  <script>
+    function previewVideo() {
+      const file = document.getElementById('videoFile').files[0];
+      const preview = document.getElementById('videoPreview');
+      const titleInput = document.getElementById('videoTitle');
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+        titleInput.value = file.name.replace(/\.[^/.]+$/, "");
       }
-    })
-    .catch(() => alert("An error occurred during upload."));
-  }
-</script>
+    }
+
+    function submitUpload() {
+      const file = document.getElementById('videoFile').files[0];
+      const title = document.getElementById('videoTitle').value;
+      const username = localStorage.getItem("username") || sessionStorage.getItem("username");
+
+      if (!file || !title.trim()) {
+        alert("Please select a video and enter a title.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('video', file);
+      formData.append('title', title);
+      formData.append('username', username || 'Unknown');
+
+      fetch('upload.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("Uploaded successfully!");
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Upload failed: " + data.error);
+        }
+      })
+      .catch(() => alert("An error occurred during upload."));
+    }
+  </script>
+</body>
+</html>
