@@ -1,11 +1,12 @@
 <?php
+session_start();
+if (!isset($_SESSION['username'])) {
+  header("Location: index.html");
+  exit;
+}
 $uploadDir = 'uploads/';
 $metadataFile = $uploadDir . 'metadata.json';
-$videos = [];
-
-if (file_exists($metadataFile)) {
-    $videos = json_decode(file_get_contents($metadataFile), true);
-}
+$videos = file_exists($metadataFile) ? json_decode(file_get_contents($metadataFile), true) : [];
 ?>
 
 <!DOCTYPE html>
@@ -58,6 +59,5 @@ if (file_exists($metadataFile)) {
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
-
 </body>
 </html>
