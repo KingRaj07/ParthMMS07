@@ -1,58 +1,63 @@
 <?php
-session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: index.html");
-    exit();
+$uploadDir = 'uploads/';
+$metadataFile = $uploadDir . 'metadata.json';
+$videos = [];
+
+if (file_exists($metadataFile)) {
+    $videos = json_decode(file_get_contents($metadataFile), true);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
+  <title>Video Dashboard</title>
   <style>
-    body { font-family: 'Roboto', sans-serif; background: #f9f9f9; }
-    .video-card { margin: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
-    video { width: 100%; height: 180px; }
-    .video-info { padding: 10px; }
-    .video-title { font-weight: bold; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2f2;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+    }
+    .video-card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    video {
+      width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .uploader {
+      font-size: 14px;
+      color: #666;
+    }
   </style>
 </head>
 <body>
-  <h1>MyTube Dashboard</h1>
-  <input type="text" id="searchInput" placeholder="Search" oninput="renderVideos()" />
-  <div id="videoContainer"></div>
+  <h1>📺 Uploaded Videos</h1>
 
-  <script>
-    async function renderVideos() {
-      const container = document.getElementById('videoContainer');
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      container.innerHTML = '';
+  <?php if (empty($videos)): ?>
+    <p>No videos uploaded yet.</p>
+  <?php else: ?>
+    <?php foreach (array_reverse($videos) as $video): ?>
+      <div class="video-card">
+        <h3><?= htmlspecialchars($video['title']) ?></h3>
+        <p class="uploader">Uploaded by: <?= htmlspecialchars($video['username']) ?> on <?= $video['uploaded_at'] ?></p>
+        <video controls>
+          <source src="<?= $uploadDir . htmlspecialchars($video['filename']) ?>" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    <?php endforeach; ?>
+  <?php endif; ?>
 
-      try {
-        const response = await fetch('videos.json');
-        const videos = await response.json();
-
-        videos
-          .filter(v => v.title.toLowerCase().includes(searchTerm))
-          .forEach(video => {
-            const card = document.createElement('div');
-            card.className = 'video-card';
-            card.innerHTML = `
-              <video src="${video.url}" controls muted></video>
-              <div class="video-info">
-                <div class="video-title">${video.title}</div>
-                <div class="video-channel">${video.channel}</div>
-              </div>
-            `;
-            container.appendChild(card);
-          });
-      } catch {
-        container.innerHTML = "<p>⚠️ Failed to load videos.</p>";
-      }
-    }
-
-    renderVideos();
-  </script>
 </body>
 </html>
