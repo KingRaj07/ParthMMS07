@@ -1,34 +1,51 @@
-<script>
-  async function renderVideos() {
-    const container = document.getElementById('videoContainer');
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    container.innerHTML = '';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <style>
+    body { font-family: 'Roboto', sans-serif; background: #f9f9f9; }
+    .video-card { margin: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
+    video { width: 100%; height: 180px; }
+    .video-info { padding: 10px; }
+    .video-title { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>MyTube Dashboard</h1>
+  <input type="text" id="searchInput" placeholder="Search" oninput="renderVideos()" />
+  <div id="videoContainer"></div>
 
-    try {
-      const response = await fetch('videos.json');
-      const videos = await response.json();
+  <script>
+    async function renderVideos() {
+      const container = document.getElementById('videoContainer');
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      container.innerHTML = '';
 
-      videos
-        .filter(v => v.title.toLowerCase().includes(searchTerm))
-        .forEach(video => {
-          const card = document.createElement('a');
-          card.className = 'video-card';
-          card.href = video.url;
-          card.target = "_blank";
-          card.innerHTML = `
-            <video src="${video.url}" muted></video>
-            <div class="video-info">
-              <div class="video-title">${video.title}</div>
-              <div class="video-channel">${video.channel}</div>
-            </div>
-          `;
-          container.appendChild(card);
-        });
-    } catch (err) {
-      container.innerHTML = "<p>⚠️ Failed to load videos.</p>";
+      try {
+        const response = await fetch('videos.json');
+        const videos = await response.json();
+
+        videos
+          .filter(v => v.title.toLowerCase().includes(searchTerm))
+          .forEach(video => {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.innerHTML = `
+              <video src="${video.url}" controls muted></video>
+              <div class="video-info">
+                <div class="video-title">${video.title}</div>
+                <div class="video-channel">${video.channel}</div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+      } catch {
+        container.innerHTML = "<p>⚠️ Failed to load videos.</p>";
+      }
     }
-  }
 
-  // Initial render
-  renderVideos();
-</script>
+    renderVideos();
+  </script>
+</body>
+</html>
