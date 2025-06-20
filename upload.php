@@ -1,46 +1,58 @@
 <?php
-$targetDir = "uploads/";
+header('Content-Type: application/json');
 
-if (!is_dir($targetDir)) {
-    mkdir($targetDir, 0777, true);
+// Configuration
+$uploadDir = 'uploads/';
+$maxFileSize = 100 * 1024 * 1024; // 100 MB
+$allowedTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+
+// Create upload directory if not exists
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0755, true);
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (isset($_FILES["video"]) && isset($_POST["title"])) {
-        $file = $_FILES["video"];
-        $title = trim($_POST["title"]);
-        $username = isset($_POST["username"]) ? trim($_POST["username"]) : "Unknown";
+// Check if form data is set
+if (!isset($_FILES['video']) || !isset($_POST['title']) || !isset($_POST['username'])) {
+    echo json_encode(['success' => false, 'error' => 'Incomplete form data.']);
+    exit;
+}
 
-        // File validation
-        $allowedTypes = ['video/mp4', 'video/webm', 'video/ogg'];
-        if (!in_array($file['type'], $allowedTypes)) {
-            echo json_encode(["success" => false, "error" => "❌ Invalid file type."]);
-            exit;
-        }
+$video = $_FILES['video'];
+$title = htmlspecialchars(trim($_POST['title']));
+$username = htmlspecialchars(trim($_POST['username']));
 
-        $fileName = basename($file["name"]);
-        $targetFile = $targetDir . $fileName;
+// File error check
+if ($video['error'] !== UPLOAD_ERR_OK) {
+    echo json_encode(['success' => false, 'error' => 'File upload error.']);
+    exit;
+}
 
-        if (move_uploaded_file($file["tmp_name"], $targetFile)) {
-            // Add video info to videos.json
-            $jsonPath = "videos.json";
-            $videos = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
+// Size check
+if ($video['size'] > $maxFileSize) {
+    echo json_encode(['success' => false, 'error' => 'File is too large.']);
+    exit;
+}
 
-            $videos[] = [
-                "title" => htmlspecialchars($title),
-                "channel" => htmlspecialchars($username),
-                "url" => $targetFile
-            ];
+// Type check
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mimeType = finfo_file($finfo, $video['tmp_name']);
+finfo_close($finfo);
 
-            file_put_contents($jsonPath, json_encode($videos, JSON_PRETTY_PRINT));
-            echo json_encode(["success" => true]);
-        } else {
-            echo json_encode(["success" => false, "error" => "⚠️ Upload failed."]);
-        }
-    } else {
-        echo json_encode(["success" => false, "error" => "⚠️ Missing title or video."]);
-    }
+if (!in_array($mimeType, $allowedTypes)) {
+    echo json_encode(['success' => false, 'error' => 'Invalid video type.']);
+    exit;
+}
+
+// Generate safe filename
+$ext = pathinfo($video['name'], PATHINFO_EXTENSION);
+$baseName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $title);
+$fileName = $baseName . '_' . time() . '.' . $ext;
+$destination = $uploadDir . $fileName;
+
+// Move file
+if (move_uploaded_file($video['tmp_name'], $destination)) {
+    echo json_encode(['success' => true, 'file' => $fileName]);
 } else {
-    echo json_encode(["success" => false, "error" => "❌ Invalid request."]);
+    echo json_encode(['success' => false, 'error' => 'Failed to save video.']);
 }
 ?>
