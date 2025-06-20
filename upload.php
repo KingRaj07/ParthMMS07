@@ -1,35 +1,46 @@
 <?php
-$uploadDir = 'uploads/';
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true);
+$targetDir = "uploads/";
+
+if (!is_dir($targetDir)) {
+    mkdir($targetDir, 0777, true);
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['title'];
-    $username = $_POST['username'];
-    $file = $_FILES['video'];
 
-    if ($file && $file['error'] === 0) {
-        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $filename = uniqid() . '.' . $ext;
-        $targetPath = $uploadDir . $filename;
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_FILES["video"]) && isset($_POST["title"])) {
+        $file = $_FILES["video"];
+        $title = trim($_POST["title"]);
+        $username = isset($_POST["username"]) ? trim($_POST["username"]) : "Unknown";
 
-        if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-            $videoData = [
-                'title' => $title,
-                'filename' => $filename,
-                'channel' => $username,
-                'url' => $targetPath
-            ];
-            $jsonPath = 'videos.json';
+        // File validation
+        $allowedTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+        if (!in_array($file['type'], $allowedTypes)) {
+            echo json_encode(["success" => false, "error" => "❌ Invalid file type."]);
+            exit;
+        }
+
+        $fileName = basename($file["name"]);
+        $targetFile = $targetDir . $fileName;
+
+        if (move_uploaded_file($file["tmp_name"], $targetFile)) {
+            // Add video info to videos.json
+            $jsonPath = "videos.json";
             $videos = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
-            $videos[] = $videoData;
+
+            $videos[] = [
+                "title" => htmlspecialchars($title),
+                "channel" => htmlspecialchars($username),
+                "url" => $targetFile
+            ];
+
             file_put_contents($jsonPath, json_encode($videos, JSON_PRETTY_PRINT));
-            echo json_encode(['success' => true]);
+            echo json_encode(["success" => true]);
         } else {
-            echo json_encode(['success' => false, 'error' => 'File move failed.']);
+            echo json_encode(["success" => false, "error" => "⚠️ Upload failed."]);
         }
     } else {
-        echo json_encode(['success' => false, 'error' => 'Upload error.']);
+        echo json_encode(["success" => false, "error" => "⚠️ Missing title or video."]);
     }
+} else {
+    echo json_encode(["success" => false, "error" => "❌ Invalid request."]);
 }
 ?>
