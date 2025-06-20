@@ -1,61 +1,13 @@
-<!-- dashboard.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
-    body { background-color: #f9f9f9; color: #0f0f0f; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-    .logo { font-size: 24px; color: red; font-weight: bold; text-decoration: none; }
-    .search-bar { flex: 1; max-width: 600px; margin: 0 20px; display: flex; }
-    .search-bar input { width: 100%; padding: 8px; border: 1px solid #ccc; border-right: none; }
-    .search-bar button { padding: 8px 12px; background: #f8f8f8; border: 1px solid #ccc; cursor: pointer; }
-    .actions { display: flex; gap: 10px; align-items: center; }
-    .upload-button { padding: 6px 12px; background: red; color: white; border: none; border-radius: 4px; text-decoration: none; }
-    .container { display: flex; }
-    .sidebar { width: 200px; background: white; padding: 20px 10px; border-right: 1px solid #e0e0e0; }
-    .sidebar-item { margin: 15px 0; font-size: 16px; cursor: pointer; text-decoration: none; color: black; }
-    .sidebar-item:hover { color: red; }
-    .content { flex: 1; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .video-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 5px rgba(0,0,0,0.1); text-decoration: none; color: inherit; display: block; }
-    video { width: 100%; height: 150px; object-fit: cover; }
-    .video-info { padding: 10px; }
-    .video-title { font-weight: bold; font-size: 14px; }
-    .video-channel { font-size: 13px; color: #606060; }
-  </style>
-</head>
-<body>
+<script>
+  async function renderVideos() {
+    const container = document.getElementById('videoContainer');
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    container.innerHTML = '';
 
-  <header>
-    <a class="logo" href="home.html">YouTube</a>
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search" oninput="renderVideos()">
-      <button onclick="renderVideos()">🔍</button>
-    </div>
-    <div class="actions">
-      <a href="upload.html" class="upload-button">Upload</a>
-    </div>
-  </header>
+    try {
+      const response = await fetch('videos.json');
+      const videos = await response.json();
 
-  <div class="container">
-    <aside class="sidebar">
-      <a href="home.html" class="sidebar-item">🏠 Home</a>
-      <div class="sidebar-item">🔥 Trending</div>
-      <div class="sidebar-item">📺 Subscriptions</div>
-      <div class="sidebar-item">📚 Library</div>
-    </aside>
-    <main class="content" id="videoContainer"></main>
-  </div>
-
-  <script>
-    function renderVideos() {
-      const videos = JSON.parse(localStorage.getItem('uploadedVideos') || '[]');
-      const container = document.getElementById('videoContainer');
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      container.innerHTML = '';
       videos
         .filter(v => v.title.toLowerCase().includes(searchTerm))
         .forEach(video => {
@@ -72,10 +24,11 @@
           `;
           container.appendChild(card);
         });
+    } catch (err) {
+      container.innerHTML = "<p>⚠️ Failed to load videos.</p>";
     }
+  }
 
-    // Initial render
-    renderVideos();
-  </script>
-</body>
-</html>
+  // Initial render
+  renderVideos();
+</script>
