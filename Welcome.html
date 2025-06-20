@@ -35,29 +35,34 @@
 </head>
 <body>
   <div class="welcome-container">
-    <h1>Welcome, <span id="userName">User</span>!</h1>
+    <h1>Welcome, <span id="userName">Loading...</span>!</h1>
     <p>You have successfully logged in.</p>
     <button class="btn" onclick="goToDashboard()">📺 Go to Dashboard</button>
     <button class="btn" onclick="logout()">🚪 Logout</button>
   </div>
 
   <script>
-    const user = localStorage.getItem("username") || sessionStorage.getItem("username");
-    if (!user) {
-      window.location.href = "index.html";
-    } else {
-      document.getElementById("userName").textContent = user;
-    }
-
     function goToDashboard() {
-      window.location.href = "dashboard.html";
+      window.location.href = "dashboard.php";
     }
 
     function logout() {
-      localStorage.clear();
-      sessionStorage.clear();
-      window.location.href = "index.html";
+      window.location.href = "logout.php";
     }
+
+    // Load username from session via fetch
+    fetch("session.php")
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById("userName").textContent = data.username;
+        } else {
+          window.location.href = "index.html";
+        }
+      })
+      .catch(() => {
+        window.location.href = "index.html";
+      });
   </script>
 </body>
 </html>
