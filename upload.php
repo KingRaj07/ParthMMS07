@@ -55,4 +55,20 @@ if (move_uploaded_file($video['tmp_name'], $destination)) {
 } else {
     echo json_encode(['success' => false, 'error' => 'Failed to save video.']);
 }
+// Save metadata
+$metadataFile = $uploadDir . 'metadata.json';
+$entry = [
+    'title' => $title,
+    'username' => $username,
+    'filename' => $fileName,
+    'uploaded_at' => date('Y-m-d H:i:s')
+];
+
+$metadataList = [];
+if (file_exists($metadataFile)) {
+    $metadataList = json_decode(file_get_contents($metadataFile), true) ?? [];
+}
+$metadataList[] = $entry;
+file_put_contents($metadataFile, json_encode($metadataList, JSON_PRETTY_PRINT));
+
 ?>
