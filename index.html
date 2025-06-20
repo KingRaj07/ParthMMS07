@@ -12,103 +12,58 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
     }
-
     .login-box {
       background: #333;
       padding: 30px;
       border-radius: 8px;
       text-align: center;
       width: 300px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
-
     input, button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
       border-radius: 5px;
       border: none;
-      font-size: 1em;
     }
-
-    input {
-      background: #444;
-      color: white;
-    }
-
     button {
       background: #00f2fe;
       color: black;
       font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    #error {
-      color: red;
-      margin-top: 10px;
-      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
   <div class="login-box">
     <h2>Login</h2>
-    <form id="loginForm" onsubmit="login(event)">
-      <input type="text" id="username" placeholder="Username" autocomplete="username" />
-      <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
-      <button type="submit" id="loginButton">Login</button>
-      <div id="error"></div>
-    </form>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <div id="error" style="color: red; margin-top: 10px;"></div>
   </div>
 
   <script>
-    function login(event) {
-      event.preventDefault();
-
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
+    function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
       const errorDiv = document.getElementById("error");
-      const loginButton = document.getElementById("loginButton");
-
-      errorDiv.textContent = "";
-
-      if (!username || !password) {
-        errorDiv.textContent = "Please enter both username and password.";
-        return;
-      }
-
-      loginButton.disabled = true;
-      loginButton.textContent = "Logging in...";
 
       fetch('login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       })
-      .then(res => {
-        if (!res.ok) throw new Error("Server error");
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
         if (data.success) {
           window.location.href = "Welcome.html";
         } else {
-          errorDiv.textContent = data.error || "Invalid username or password.";
+          errorDiv.textContent = data.error;
         }
       })
       .catch(() => {
         errorDiv.textContent = "Login failed due to server error.";
-      })
-      .finally(() => {
-        loginButton.disabled = false;
-        loginButton.textContent = "Login";
       });
     }
   </script>
