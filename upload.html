@@ -25,12 +25,10 @@
       const titleInput = document.getElementById('videoTitle');
 
       if (file) {
-        // File type check
         if (!file.type.startsWith("video/")) {
           alert("Please select a valid video file.");
           return;
         }
-
         preview.src = URL.createObjectURL(file);
         preview.style.display = 'block';
         titleInput.value = file.name.replace(/\.[^/.]+$/, "");
@@ -40,15 +38,12 @@
     function submitUpload() {
       const file = document.getElementById('videoFile').files[0];
       const title = document.getElementById('videoTitle').value.trim();
-      const username = localStorage.getItem("username") || sessionStorage.getItem("username");
       const status = document.getElementById("status");
 
       if (!file || !title) {
         alert("Please select a video and enter a title.");
         return;
       }
-
-      // Validate file size (max 100MB)
       if (file.size > 100 * 1024 * 1024) {
         alert("File is too large (max 100MB).");
         return;
@@ -57,9 +52,7 @@
       const formData = new FormData();
       formData.append('video', file);
       formData.append('title', title);
-      formData.append('username', username || 'Unknown');
 
-      status.textContent = "Uploading...";
       fetch('upload.php', {
         method: 'POST',
         body: formData
@@ -68,7 +61,7 @@
       .then(data => {
         if (data.success) {
           alert("Uploaded successfully!");
-          window.location.href = "dashboard.html";
+          window.location.href = "dashboard.php";
         } else {
           status.textContent = "";
           alert("Upload failed: " + data.error);
